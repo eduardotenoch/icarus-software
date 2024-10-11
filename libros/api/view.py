@@ -36,27 +36,22 @@ class LibrosApiViewSet(ModelViewSet):
         methods=["put"],
         url_path=r"contar_palabras",
     )
-    def contar_palabras(self, request):  # Asegúrate de incluir 'self'
-        archivo = request.FILES.get('archivo')  # Ajusta 'archivo' al nombre real de tu campo
-
+    def contar_palabras(self, request):  
+        archivo = request.FILES.get('archivo')  
         if archivo:
-            # Extraer el nombre del archivo del objeto InMemoryUploadedFile
-            nombre_archivo = archivo.name  # Obtener el nombre del archivo subido
             
-            # Usar el nombre del archivo para crear la ruta completa
+            nombre_archivo = archivo.name  
+            
             ruta_archivo = os.path.join(os.getcwd(), nombre_archivo)
             
-            # Guardar el archivo en el servidor
             with open(ruta_archivo, 'wb+') as destino:
                 for chunk in archivo.chunks():
                     destino.write(chunk)
 
-            # Contar las palabras en el archivo guardado
             total_palabras = self.contar_palabras_en_archivo(ruta_archivo)
 
             return Response({'mensaje': 'Palabras contadas exitosamente', 'total_palabras': total_palabras})
         else:
-            # Manejar el caso donde no se subió ningún archivo
             return Response({'error': 'No se ha subido ningún archivo'}, status=400)
 
     def contar_palabras_en_archivo(self, ruta_archivo):
@@ -64,8 +59,7 @@ class LibrosApiViewSet(ModelViewSet):
         try:
             with open(ruta_archivo, 'r', encoding='utf-8') as f:
                 contenido = f.read()
-                # Contar las palabras, separadas por espacios
                 palabras = contenido.split()
-                return len(palabras)  # Retorna el número total de palabras
+                return len(palabras) 
         except Exception as e:
-            return 0  # Si hay un error, retorna 0 o maneja el error según sea necesario
+            return 0  

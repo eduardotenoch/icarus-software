@@ -1,7 +1,6 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-# from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from autores.api.view import autoresApiViewSet, tareasApiViewSet
 
 router_autores = DefaultRouter()
